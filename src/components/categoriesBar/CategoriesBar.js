@@ -32,7 +32,7 @@ const CategoriesBar = ({ getVideosByCategory, getPopularVideos }) => {
 
   const handleClick = (value) => {
     setActiveElement(value);
-    if (value == "All") {
+    if (value === "All") {
       getPopularVideos();
     } else {
       getVideosByCategory(value);

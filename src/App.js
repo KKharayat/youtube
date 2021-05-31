@@ -1,17 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
+import { connect } from "react-redux";
+import { Redirect, Route, Switch, useHistory } from "react-router-dom";
+
 import Header from "./components/header/Header";
 import SideBar from "./components/sideBar/SideBar";
 import HomeScreen from "./screens/homeScreen/HomeScreen";
 import LoginScreen from "./screens/loginScreen/LoginScreen";
-
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-  useHistory,
-} from "react-router-dom";
+import WatchScreen from "./screens/watchScreen/WatchScreen";
 
 import "./_app.scss";
 
@@ -32,29 +28,44 @@ const Layout = ({ children }) => {
   );
 };
 
-const App = () => {
+const App = (props) => {
+  const history = useHistory();
+  useEffect(() => {
+    if (!props.auth.loading && !props.auth.accessToken) {
+      history.push("/auth");
+    }
+  }, [props.auth.accessToken, props.auth.loading, history]);
+
   return (
-    <Router>
-      <Switch>
-        <Route path="/" exact>
-          <Layout>
-            <HomeScreen />
-          </Layout>
-        </Route>
+    <Switch>
+      <Route path="/" exact>
+        <Layout>
+          <HomeScreen />
+        </Layout>
+      </Route>
 
-        <Route path="/auth">
-          <LoginScreen />
-        </Route>
+      <Route path="/auth">
+        <LoginScreen />
+      </Route>
 
-        <Route path="/search">
-          <Layout>Search</Layout>
-        </Route>
-        <Route>
-          <Redirect to="/" />
-        </Route>
-      </Switch>
-    </Router>
+      <Route path="/search">
+        <Layout>Search</Layout>
+      </Route>
+
+      <Route path="/watch/:id">
+        <Layout>
+          <WatchScreen />
+        </Layout>
+      </Route>
+      <Route>
+        <Redirect to="/" />
+      </Route>
+    </Switch>
   );
 };
 
-export default App;
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+});
+
+export default connect(mapStateToProps, {})(App);
