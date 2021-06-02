@@ -6,9 +6,11 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { MdNotifications, MdApps } from "react-icons/md";
 import { useHistory } from "react-router-dom";
 
-const Header = ({ handleToggleSidebar, user: { photoURL } }) => {
+const Header = ({ handleToggleSidebar, user }) => {
   const [input, setInput] = useState("");
   const history = useHistory();
+
+  const photoURL = user?.photoURL;
 
   const handleSubmit = (e) => {
     e.preventDefault();

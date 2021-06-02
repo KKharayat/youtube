@@ -26,7 +26,7 @@ const WatchScreen = ({
   useEffect(() => {
     getVideoById(id);
     getRelatedVideos(id);
-  }, [getVideoById, id]);
+  }, [getVideoById, getRelatedVideos, id]);
 
   return (
     <Row>
