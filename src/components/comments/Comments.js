@@ -1,18 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import Comment from "../comment/Comment";
 import "./_comments.scss";
+import {
+  getCommentsOfVideoById,
+  addComment,
+} from "../../redux/actions/commentsAction";
 
-const Comments = () => {
-  const handleComment = () => {
-    // e.preventDefault()
-    // if (text.length === 0) return
-    // dispatch(addComment(videoId, text))
-    // setText('')
+const Comments = ({
+  totalComments,
+  videoId,
+  getCommentsOfVideoById,
+  comments,
+  addComment,
+}) => {
+  useEffect(() => {
+    getCommentsOfVideoById(videoId);
+  }, [getCommentsOfVideoById, videoId]);
+
+  const [text, setText] = useState("");
+
+  const _comments = comments?.map(
+    (comment) => comment.snippet.topLevelComment.snippet
+  );
+
+  const handleComment = (e) => {
+    console.log("Dekho", text);
+    e.preventDefault();
+    if (text.length === 0) return;
+    addComment(videoId, text);
+    setText("");
   };
-
   return (
     <div className="comments">
-      <p>100 Comments</p>
+      <p>{totalComments} Comments</p>
       <div className="my-2 comments_form d-flex w-100">
         <img
           src="https://image.flaticon.com/icons/png/512/147/147144.png"
@@ -24,19 +45,25 @@ const Comments = () => {
             type="text"
             className="flex-grow-1"
             placeholder="Write a comment..."
-            //  value={text}
-            //  onChange={e => setText(e.target.value)}
+            value={text}
+            onChange={(e) => setText(e.target.value)}
           />
           <button className="p-2 border-0">Comment</button>
         </form>
       </div>
       <div className="comments_list">
-        {[...Array(15)].map(() => (
-          <Comment />
+        {_comments?.map((comment, i) => (
+          <Comment comment={comment} key={i} />
         ))}
       </div>
     </div>
   );
 };
 
-export default Comments;
+const mapStateToProps = (state) => ({
+  comments: state.commentList.comments,
+});
+
+export default connect(mapStateToProps, { getCommentsOfVideoById, addComment })(
+  Comments
+);

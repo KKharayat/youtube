@@ -12,6 +12,7 @@ import {
 } from "react-icons/md";
 import { connect } from "react-redux";
 import { log_out } from "../../redux/actions/authAction";
+import { Link } from "react-router-dom";
 
 const SideBar = ({ sidebar, handleToggleSidebar, log_out }) => {
   const handleLogout = () => {
@@ -22,14 +23,19 @@ const SideBar = ({ sidebar, handleToggleSidebar, log_out }) => {
       className={sidebar ? "sidebar open" : "sidebar"}
       onClick={() => handleToggleSidebar(false)}
     >
-      <li>
-        <MdHome size={23} />
-        <span>Home</span>
-      </li>
-      <li>
-        <MdSubscriptions size={23} />
-        <span>Subscriptions</span>
-      </li>
+      <Link to="/">
+        <li>
+          <MdHome size={23} />
+          <span>Home</span>
+        </li>
+      </Link>
+      <Link to="/feed/subscriptions">
+        <li>
+          <MdSubscriptions size={23} />
+          <span>Subscriptions</span>
+        </li>
+      </Link>
+
       <li>
         <MdThumbUp size={23} />
         <span>Liked Video</span>

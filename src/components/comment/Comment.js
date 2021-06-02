@@ -2,19 +2,17 @@ import React from "react";
 import "./_comment.scss";
 import moment from "moment";
 
-const Comment = () => {
+const Comment = ({ comment }) => {
+  const { authorDisplayName, authorProfileImageUrl, publishedAt, textDisplay } =
+    comment;
   return (
     <div className="p-2 comment d-flex">
-      <img
-        src="https://image.flaticon.com/icons/png/512/147/147144.png"
-        alt=""
-        className="rounded-circle "
-      />
+      <img src={authorProfileImageUrl} alt="" className="rounded-circle " />
       <div className="comment_body">
         <p className=" comment_header">
-          authorDisplayName • {moment("2020-02-1").fromNow()}
+          {authorDisplayName} • {moment(publishedAt).fromNow()}
         </p>
-        <p className="mb-0">textDisplay</p>
+        <p className="mb-0">{textDisplay}</p>
       </div>
     </div>
   );
