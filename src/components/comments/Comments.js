@@ -13,6 +13,7 @@ const Comments = ({
   getCommentsOfVideoById,
   comments,
   addComment,
+  user: { photoURL },
 }) => {
   useEffect(() => {
     getCommentsOfVideoById(videoId);
@@ -35,11 +36,7 @@ const Comments = ({
     <div className="comments">
       <p>{totalComments} Comments</p>
       <div className="my-2 comments_form d-flex w-100">
-        <img
-          src="https://image.flaticon.com/icons/png/512/147/147144.png"
-          alt="avatar"
-          className="mr-3 rounded-circle"
-        />
+        <img src={photoURL} alt="avatar" className="mr-3 rounded-circle" />
         <form onSubmit={handleComment} className="d-flex flex-grow-1 ">
           <input
             type="text"
@@ -61,6 +58,7 @@ const Comments = ({
 };
 
 const mapStateToProps = (state) => ({
+  user: state.auth?.user,
   comments: state.commentList.comments,
 });
 

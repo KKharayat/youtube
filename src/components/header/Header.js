@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import "./_header.scss";
-
+import { connect } from "react-redux";
 import { FaBars } from "react-icons/fa";
 import { AiOutlineSearch } from "react-icons/ai";
 import { MdNotifications, MdApps } from "react-icons/md";
 import { useHistory } from "react-router-dom";
 
-const Header = ({ handleToggleSidebar }) => {
+const Header = ({ handleToggleSidebar, user: { photoURL } }) => {
   const [input, setInput] = useState("");
   const history = useHistory();
 
@@ -40,13 +40,14 @@ const Header = ({ handleToggleSidebar }) => {
       <div className="header_icons">
         <MdNotifications size={28} />
         <MdApps size={28} />
-        <img
-          src="https://image.flaticon.com/icons/png/512/147/147144.png"
-          alt="avatar"
-        />
+        <img src={photoURL} alt="avatar" />
       </div>
     </div>
   );
 };
 
-export default Header;
+const mapStateToProps = (state) => ({
+  user: state.auth?.user,
+});
+
+export default connect(mapStateToProps, {})(Header);
